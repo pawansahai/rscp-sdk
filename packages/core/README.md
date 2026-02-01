@@ -1,9 +1,9 @@
-# @rscp/core
+# @autoviatest/rscp-core
 
 Core library for the Road Safety Certification Protocol (RSCP).
 
-[![npm version](https://img.shields.io/npm/v/@rscp/core.svg)](https://www.npmjs.com/package/@rscp/core)
-[![License](https://img.shields.io/npm/l/@rscp/core.svg)](https://github.com/rscp-protocol/rscp-sdk/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@autoviatest/rscp-core.svg)](https://www.npmjs.com/package/@autoviatest/rscp-core)
+[![License](https://img.shields.io/npm/l/@autoviatest/rscp-core.svg)](https://github.com/pawansahai/rscp-sdk/blob/main/LICENSE)
 
 ## Overview
 
@@ -17,11 +17,11 @@ RSCP is a privacy-preserving, zero-trust protocol for road safety certifications
 ## Installation
 
 ```bash
-npm install @rscp/core
+npm install @autoviatest/rscp-core
 # or
-pnpm add @rscp/core
+pnpm add @autoviatest/rscp-core
 # or
-yarn add @rscp/core
+yarn add @autoviatest/rscp-core
 ```
 
 ## Quick Start
@@ -33,7 +33,7 @@ import {
   enforcePublicAttributesOnly,
   createSignedCredential,
   generateSigningKey,
-} from '@rscp/core';
+} from '@autoviatest/rscp-core';
 
 // Generate identifiers
 const certNumber = generateCertificateNumber({
@@ -76,7 +76,7 @@ const signed = await createSignedCredential({
 RSCP enforces privacy at the protocol level, not by policy:
 
 ```typescript
-import { ALLOWED_PUBLIC_FIELDS, FORBIDDEN_FIELDS } from '@rscp/core';
+import { ALLOWED_PUBLIC_FIELDS, FORBIDDEN_FIELDS } from '@autoviatest/rscp-core';
 
 console.log(ALLOWED_PUBLIC_FIELDS);
 // ['givenName', 'familyName', 'level', 'validFrom', 'validUntil']
@@ -201,7 +201,7 @@ determineLevelFromScores(testScore, hazardScore?): CertificationLevel | null
 For fluent credential creation:
 
 ```typescript
-import { RSCP } from '@rscp/core';
+import { RSCP } from '@autoviatest/rscp-core';
 
 const credential = RSCP.credential()
   .issuer('SWG', 'IN')
@@ -219,7 +219,7 @@ import {
   ProtocolViolationError,
   MissingAttributeError,
   AttributeValidationError,
-} from '@rscp/core';
+} from '@autoviatest/rscp-core';
 
 try {
   enforcePublicAttributesOnly({ email: 'test@example.com' });
@@ -250,4 +250,4 @@ Apache-2.0 - see [LICENSE](../../LICENSE) for details.
 
 - [Documentation](https://rscp.org/docs)
 - [Protocol Specification](https://rscp.org/spec)
-- [GitHub](https://github.com/rscp-protocol/rscp-sdk)
+- [GitHub](https://github.com/pawansahai/rscp-sdk)
