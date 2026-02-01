@@ -1,0 +1,107 @@
+{
+  "name": "@rscp/core",
+  "version": "1.0.0-alpha.1",
+  "description": "RSCP - Road Safety Certification Protocol Core Library",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./types": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/types/index.mjs"
+      },
+      "require": {
+        "types": "./dist/types/index.d.cts",
+        "default": "./dist/types/index.cjs"
+      }
+    },
+    "./identifiers": {
+      "import": {
+        "types": "./dist/identifiers/index.d.ts",
+        "default": "./dist/identifiers/index.mjs"
+      },
+      "require": {
+        "types": "./dist/identifiers/index.d.cts",
+        "default": "./dist/identifiers/index.cjs"
+      }
+    },
+    "./protocol": {
+      "import": {
+        "types": "./dist/protocol/index.d.ts",
+        "default": "./dist/protocol/index.mjs"
+      },
+      "require": {
+        "types": "./dist/protocol/index.d.cts",
+        "default": "./dist/protocol/index.cjs"
+      }
+    },
+    "./crypto": {
+      "import": {
+        "types": "./dist/crypto/index.d.ts",
+        "default": "./dist/crypto/index.mjs"
+      },
+      "require": {
+        "types": "./dist/crypto/index.d.cts",
+        "default": "./dist/crypto/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "lint": "eslint src/"
+  },
+  "keywords": [
+    "rscp",
+    "road-safety",
+    "certification",
+    "credentials",
+    "verifiable-credentials",
+    "protocol",
+    "delivery",
+    "driving"
+  ],
+  "author": "RSCP Protocol Contributors",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rscp-protocol/rscp-sdk.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://rscp.org/docs/sdk",
+  "bugs": {
+    "url": "https://github.com/rscp-protocol/rscp-sdk/issues"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^1.6.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
