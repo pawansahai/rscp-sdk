@@ -1,0 +1,2 @@
+# This directory contains generated PDF certificates
+# PDFs are ignored by git, only .gitkeep is tracked

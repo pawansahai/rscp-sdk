@@ -35,3 +35,6 @@ pnpm-debug.log*
 # Changeset
 .changeset/*.md
 !.changeset/README.md
+
+# Generated certificates
+examples/certificate-pdf/output/*.pdf
