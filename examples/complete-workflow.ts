@@ -315,9 +315,8 @@ console.log(`   Result: ${meetsRequirement ? '✅ PASSES' : '❌ FAILS'}\n`);
 console.log('📋 STEP 9: Verification URL');
 console.log('─'.repeat(60));
 
-const verifyUrl = getVerificationUrl(codeToVerify);
-console.log(`   ${verifyUrl}`);
-console.log(`   (Include certificate number: ${certificateToVerify})\n`);
+const verifyUrl = getVerificationUrl(certificateToVerify, codeToVerify);
+console.log(`   ${verifyUrl}\n`);
 
 // ============================================================================
 // STEP 10: USING THE BUILDER API

@@ -16,17 +16,35 @@ function App() {
   const [showManualForm, setShowManualForm] = useState(false);
 
   useEffect(() => {
-    // Parse URL parameters
+    // Parse URL parameters. The canonical RSCP verification URL produced by
+    // `getVerificationUrl()` is `/v/<verificationCode>?cert=<certificateNumber>`
+    // — code lives in the path, cert lives in the query. We also accept the
+    // legacy `?code=&cert=` form for backwards compatibility with older
+    // integrations and the manual-entry redirect below.
     const params = new URLSearchParams(window.location.search);
+    const pathMatch = window.location.pathname.match(/^\/v\/([A-Z0-9-]+)\/?$/i);
+    const codeFromPath = pathMatch ? pathMatch[1]!.replace(/-/g, '').toUpperCase() : null;
+    const code = codeFromPath ?? params.get('code');
     const cert = params.get('cert');
-    const code = params.get('code');
     const qrData = params.get('data'); // Optional: full QR data JSON
 
-    if (cert && code) {
-      const verificationResult = verifyCertificate(cert, code, qrData || undefined);
+    // Run verification whenever we have at least a code; the result page
+    // will surface what's missing (e.g. invalid cert number) so the scanner
+    // user understands the credential rather than seeing a blank form.
+    if (code) {
+      const verificationResult = verifyCertificate(
+        cert ?? '',
+        code,
+        qrData || undefined,
+      );
       setResult(verificationResult);
-      setManualCert(cert);
+      setManualCert(cert ?? '');
       setManualCode(code);
+    } else if (cert) {
+      // Have cert but no code — pre-fill the manual form so the user only
+      // has to type the short code.
+      setManualCert(cert);
+      setShowManualForm(true);
     } else {
       setShowManualForm(true);
     }
@@ -41,10 +59,14 @@ function App() {
       setResult(verificationResult);
       setShowManualForm(false);
 
-      // Update URL without reload
+      // Push the canonical `/v/<code>?cert=<cert>` URL so refresh / share
+      // round-trips back to the same result. Matches what
+      // `getVerificationUrl()` from @autoviatest/rscp-core produces.
+      const cleanedCode = manualCode.replace(/[-\s]/g, '').toUpperCase();
       const url = new URL(window.location.href);
+      url.pathname = `/v/${cleanedCode}`;
+      url.search = '';
       url.searchParams.set('cert', manualCert);
-      url.searchParams.set('code', manualCode);
       window.history.pushState({}, '', url);
     }
   };
@@ -54,7 +76,8 @@ function App() {
     setManualCert('');
     setManualCode('');
     setShowManualForm(true);
-    window.history.pushState({}, '', window.location.pathname);
+    // Reset to the bare verifier page — drop any /v/<code> path and query.
+    window.history.pushState({}, '', '/');
   };
 
   if (loading) {

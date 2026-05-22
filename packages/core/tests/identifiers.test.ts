@@ -366,18 +366,44 @@ describe('Convenience Functions', () => {
   });
 
   describe('getVerificationUrl', () => {
-    it('generates correct URL', () => {
-      expect(getVerificationUrl('A3B7K9M2')).toBe('https://rscp.org/v/A3B7K9M2');
+    const CERT = 'RS-2026-G-IN-SWG-000001-7';
+
+    it('embeds both the cleaned code and the certificate number', () => {
+      expect(getVerificationUrl(CERT, 'A3B7K9M2')).toBe(
+        `https://rscp.org/v/A3B7K9M2?cert=${CERT}`
+      );
     });
 
-    it('cleans code', () => {
-      expect(getVerificationUrl('a3b7-k9m2')).toBe('https://rscp.org/v/A3B7K9M2');
+    it('cleans the verification code (hyphens, casing)', () => {
+      expect(getVerificationUrl(CERT, 'a3b7-k9m2')).toBe(
+        `https://rscp.org/v/A3B7K9M2?cert=${CERT}`
+      );
+    });
+
+    it('normalizes the certificate number to uppercase', () => {
+      expect(getVerificationUrl('rs-2026-g-in-swg-000001-7', 'A3B7K9M2')).toBe(
+        `https://rscp.org/v/A3B7K9M2?cert=${CERT}`
+      );
+    });
+
+    it('trims surrounding whitespace from the certificate number', () => {
+      expect(getVerificationUrl(`  ${CERT}  `, 'A3B7K9M2')).toBe(
+        `https://rscp.org/v/A3B7K9M2?cert=${CERT}`
+      );
     });
 
     it('allows custom base URL', () => {
-      expect(getVerificationUrl('A3B7K9M2', 'https://custom.com')).toBe(
-        'https://custom.com/v/A3B7K9M2'
-      );
+      expect(
+        getVerificationUrl(CERT, 'A3B7K9M2', 'https://rscp.autoviatest.com')
+      ).toBe(`https://rscp.autoviatest.com/v/A3B7K9M2?cert=${CERT}`);
+    });
+
+    it('does not double-encode characters that are URL-safe in the cert format', () => {
+      // RSCP cert numbers contain only A–Z, 0–9 and hyphens, none of which
+      // encodeURIComponent escapes — guards against future regressions where
+      // someone "fixes" encoding by switching helpers.
+      const url = getVerificationUrl(CERT, 'A3B7K9M2');
+      expect(url).not.toContain('%2D'); // hyphen not escaped
     });
   });
 });

@@ -226,9 +226,13 @@ describe('RSCP End-to-End Tests', () => {
       // ========================================
       // STEP 7: Verification URL
       // ========================================
-      const verifyUrl = getVerificationUrl(identifiers.verificationCode);
+      const verifyUrl = getVerificationUrl(
+        identifiers.certificateNumber,
+        identifiers.verificationCode,
+      );
       expect(verifyUrl).toContain('rscp.org');
       expect(verifyUrl).toContain(identifiers.verificationCode);
+      expect(verifyUrl).toContain(identifiers.certificateNumber);
     });
   });
 

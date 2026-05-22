@@ -481,22 +481,39 @@ export function generateAllIdentifiers(options: GenerateCertificateNumberOptions
 }
 
 /**
- * Determine verification URL for a credential.
+ * Build the canonical verification URL for a credential.
  *
- * @param verificationCode - The verification code
- * @param baseUrl - Base URL for verification (default: https://rscp.org)
+ * The verifier needs BOTH the certificate number (to validate the ISO 7064
+ * check digit and extract level/issuer/year) AND the verification code (to
+ * validate the Damm check digit and identify the credential). A URL that
+ * only carries one of them cannot produce a passing verification, so this
+ * helper requires both — see `apps/verification-web/src/rscp-utils.ts` for
+ * the matching `verifyCertificate(certificateNumber, verificationCode)`
+ * contract.
+ *
+ * Format: `{baseUrl}/v/{verificationCode}?cert={certificateNumber}`
+ *
+ * The verification code goes in the path (compact, scannable, makes the
+ * URL friendly to short-link tooling) and the certificate number rides on
+ * the `cert` query parameter where the verifier app picks it up.
+ *
+ * @param certificateNumber - The certificate number (e.g. RS-2026-G-IN-SWG-000001-7)
+ * @param verificationCode - The 8-character verification code (with or without hyphen)
+ * @param baseUrl - Base URL of the verifier (default: https://rscp.org)
  * @returns Full verification URL
  *
  * @example
  * ```typescript
- * getVerificationUrl('A3B7K9M2');
- * // Returns: 'https://rscp.org/v/A3B7K9M2'
+ * getVerificationUrl('RS-2026-G-IN-SWG-000001-7', 'A3B7K9M2');
+ * // Returns: 'https://rscp.org/v/A3B7K9M2?cert=RS-2026-G-IN-SWG-000001-7'
  * ```
  */
 export function getVerificationUrl(
+  certificateNumber: string,
   verificationCode: string,
   baseUrl: string = 'https://rscp.org'
 ): string {
-  const clean = cleanCode(verificationCode);
-  return `${baseUrl}/v/${clean}`;
+  const cleanedCode = cleanCode(verificationCode);
+  const cert = certificateNumber.trim().toUpperCase();
+  return `${baseUrl}/v/${cleanedCode}?cert=${encodeURIComponent(cert)}`;
 }
