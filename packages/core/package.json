@@ -1,16 +1,16 @@
 {
   "name": "@autoviatest/rscp-core",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "RSCP - Road Safety Certification Protocol Core Library",
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
+        "default": "./dist/index.js"
       },
       "require": {
         "types": "./dist/index.d.cts",
@@ -20,7 +20,7 @@
     "./types": {
       "import": {
         "types": "./dist/types/index.d.ts",
-        "default": "./dist/types/index.mjs"
+        "default": "./dist/types/index.js"
       },
       "require": {
         "types": "./dist/types/index.d.cts",
@@ -30,7 +30,7 @@
     "./identifiers": {
       "import": {
         "types": "./dist/identifiers/index.d.ts",
-        "default": "./dist/identifiers/index.mjs"
+        "default": "./dist/identifiers/index.js"
       },
       "require": {
         "types": "./dist/identifiers/index.d.cts",
@@ -40,7 +40,7 @@
     "./protocol": {
       "import": {
         "types": "./dist/protocol/index.d.ts",
-        "default": "./dist/protocol/index.mjs"
+        "default": "./dist/protocol/index.js"
       },
       "require": {
         "types": "./dist/protocol/index.d.cts",
@@ -50,7 +50,7 @@
     "./crypto": {
       "import": {
         "types": "./dist/crypto/index.d.ts",
-        "default": "./dist/crypto/index.mjs"
+        "default": "./dist/crypto/index.js"
       },
       "require": {
         "types": "./dist/crypto/index.d.cts",
